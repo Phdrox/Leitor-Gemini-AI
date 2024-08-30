@@ -1,0 +1,30 @@
+version: "3.7"
+
+services:
+ db_sistema:
+    image: mysql
+    ports:
+      - "3306:3306"
+    expose:
+      - 3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=backdb1234
+      - MYSQL_DATABASE=backendshopper
+ api:
+ 
+  build:
+   context: .
+   dockerfile: Dockerfile
+   target: build
+  volumes:
+   - ./:/app
+   - /app/node_modules
+
+  links:
+      -  db_sistema
+  ports:
+   - 80:80
+  depends_on:
+   -  db_sistema
+  command: npm run dev
+
